@@ -14,7 +14,6 @@ router.post('/signup', async (req: any, res: any) => {
         await newUser.save();
         res.status(201).json({ message: 'User created successfully' });
     } catch (error: any) {
-        // Check for duplicate key error (MongoDB error code 11000)
         if (error.code === 11000) {
             if (error.keyPattern?.username) {
                 return res.status(400).json({ error: 'Username already taken' });
@@ -41,7 +40,8 @@ router.post('/login', async (req: any, res: any) => {
 
         const token = jwt.sign({ id: user._id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
 
-        res.json({ message: 'Login successful', token });
+        // Change: Send the role back to the client
+        res.json({ message: 'Login successful', token, role: user.role });
     } catch (error) {
         res.status(500).json({ error: 'Error logging in' });
     }

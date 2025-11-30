@@ -24,9 +24,14 @@ export default function Login() {
             if (response.ok) {
                 localStorage.setItem('token', data.token)
                 login()
-                navigate('/dashboard')
+
+                if (data.role === 'admin') {
+                    navigate('/admin')
+                } else {
+                    navigate('/dashboard')
+                }
             } else {
-                console.error('Login failed')
+                alert(data.error || 'Login failed')
             }
         } catch (error) {
             console.error('Error:', error)
