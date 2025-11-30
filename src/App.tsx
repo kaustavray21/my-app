@@ -4,7 +4,7 @@ import Navbar from './components/Navbar'
 import Signup from './components/Signup'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
-import LandingPage from './components/LandingPage'
+import HomaPage from './components/HomaPage.tsx'
 import AdminDashboard from './components/AdminDashboard'
 import ProtectedRoute from './components/ProtectedRoute'
 import PublicOnlyRoute from './components/PublicOnlyRoute'
@@ -17,7 +17,7 @@ function App() {
             <Router>
                 <Navbar />
                 <Routes>
-                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/" element={<HomaPage />} />
                     <Route
                         path="/signup"
                         element={

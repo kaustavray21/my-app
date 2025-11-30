@@ -6,6 +6,10 @@ export default function PublicOnlyRoute({ children }: { children: ReactNode }) {
     const { isAuthenticated } = useAuth()
 
     if (isAuthenticated) {
+        const role = localStorage.getItem('role')
+        if (role === 'admin') {
+            return <Navigate to="/admin" replace />
+        }
         return <Navigate to="/dashboard" replace />
     }
 

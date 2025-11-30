@@ -23,13 +23,10 @@ export default function Login() {
 
             if (response.ok) {
                 localStorage.setItem('token', data.token)
+                localStorage.setItem('role', data.role) // <--- SAVE ROLE HERE
                 login()
 
-                if (data.role === 'admin') {
-                    navigate('/admin')
-                } else {
-                    navigate('/dashboard')
-                }
+                // The PublicOnlyRoute will handle the redirect now based on the saved role
             } else {
                 alert(data.error || 'Login failed')
             }

@@ -15,6 +15,7 @@ export default function Dashboard() {
     const handleLogout = () => {
         logout()
         localStorage.removeItem('token')
+        localStorage.removeItem('role')
         navigate('/')
     }
 
@@ -45,7 +46,7 @@ export default function Dashboard() {
         }
 
         fetchProfile()
-    }, [handleLogout])
+    }, [])
 
     if (!user) {
         return (
