@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import {createContext, useContext, useState, type ReactNode} from 'react'
 
 interface AuthContextType {
     isAuthenticated: boolean
@@ -8,15 +8,17 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-    // You can initialize this from localStorage if you want persistence
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
+export function AuthProvider({children}: { children: ReactNode }) {
+    // Initialize state by checking if a token exists in localStorage
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+        return !!localStorage.getItem('token')
+    })
 
     const login = () => setIsAuthenticated(true)
     const logout = () => setIsAuthenticated(false)
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{isAuthenticated, login, logout}}>
             {children}
         </AuthContext.Provider>
     )

@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
+import adminRoutes from './routes/admin';
 
 const app = express();
 const PORT = 3000;
@@ -16,6 +17,7 @@ mongoose.connect('mongodb://localhost:27017/my-app')
 
 app.use('/', authRoutes);
 app.use('/', userRoutes);
+app.use('/', adminRoutes);
 
 app.get('/', (req, res) => {
     res.send('Server is running');

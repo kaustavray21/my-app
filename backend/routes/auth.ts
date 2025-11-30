@@ -6,19 +6,28 @@ import { SECRET_KEY } from '../middleware/auth';
 
 const router = express.Router();
 
-router.post('/signup', async (req, res) => {
+router.post('/signup', async (req: any, res: any) => {
     try {
         const { username, email, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({ username, email, password: hashedPassword });
         await newUser.save();
         res.status(201).json({ message: 'User created successfully' });
-    } catch (error) {
+    } catch (error: any) {
+        // Check for duplicate key error (MongoDB error code 11000)
+        if (error.code === 11000) {
+            if (error.keyPattern?.username) {
+                return res.status(400).json({ error: 'Username already taken' });
+            }
+            if (error.keyPattern?.email) {
+                return res.status(400).json({ error: 'Email already exists' });
+            }
+        }
         res.status(500).json({ error: 'Error signing up' });
     }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req: any, res: any) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });

@@ -5,10 +5,12 @@ export default function Signup() {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
     const navigate = useNavigate()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        setError('')
         try {
             const response = await fetch('http://localhost:3000/signup', {
                 method: 'POST',
@@ -17,13 +19,17 @@ export default function Signup() {
                 },
                 body: JSON.stringify({ username, email, password }),
             })
+
+            const data = await response.json()
+
             if (response.ok) {
                 navigate('/login')
             } else {
-                console.error('Signup failed')
+                setError(data.error || 'Signup failed')
             }
-        } catch (error) {
-            console.error('Error:', error)
+        } catch (err) {
+            setError('An error occurred. Please try again.')
+            console.error('Error:', err)
         }
     }
 
@@ -31,6 +37,13 @@ export default function Signup() {
         <div className="flex min-h-screen items-center justify-center bg-gray-100">
             <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
                 <h2 className="mb-6 text-center text-2xl font-bold text-gray-900">Sign Up</h2>
+
+                {error && (
+                    <div className="mb-4 rounded bg-red-100 p-3 text-sm text-red-700">
+                        {error}
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Username</label>

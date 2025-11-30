@@ -18,8 +18,12 @@ export default function Login() {
                 },
                 body: JSON.stringify({ email, password }),
             })
+
+            const data = await response.json()
+
             if (response.ok) {
-                login() // Update the global auth state
+                localStorage.setItem('token', data.token)
+                login()
                 navigate('/dashboard')
             } else {
                 console.error('Login failed')

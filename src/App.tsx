@@ -5,6 +5,10 @@ import Signup from './components/Signup'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import LandingPage from './components/LandingPage'
+import AdminDashboard from './components/AdminDashboard'
+import ProtectedRoute from './components/ProtectedRoute'
+import PublicOnlyRoute from './components/PublicOnlyRoute'
+import AdminProtectedRoute from './components/AdminProtectedRoute'
 import './App.css'
 
 function App() {
@@ -14,9 +18,38 @@ function App() {
                 <Navbar />
                 <Routes>
                     <Route path="/" element={<LandingPage />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route
+                        path="/signup"
+                        element={
+                            <PublicOnlyRoute>
+                                <Signup />
+                            </PublicOnlyRoute>
+                        }
+                    />
+                    <Route
+                        path="/login"
+                        element={
+                            <PublicOnlyRoute>
+                                <Login />
+                            </PublicOnlyRoute>
+                        }
+                    />
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/admin"
+                        element={
+                            <AdminProtectedRoute>
+                                <AdminDashboard />
+                            </AdminProtectedRoute>
+                        }
+                    />
                 </Routes>
             </Router>
         </AuthProvider>
