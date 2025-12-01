@@ -1,28 +1,31 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { AuthProvider } from './context/AuthContext'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import {AuthProvider} from './context/AuthContext'
 import Navbar from './components/Navbar'
 import Signup from './components/Signup'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
-import HomaPage from './components/HomaPage.tsx'
+import HomePage from './components/HomePage'
+
 import AdminDashboard from './components/AdminDashboard'
 import ProtectedRoute from './components/ProtectedRoute'
 import PublicOnlyRoute from './components/PublicOnlyRoute'
 import AdminProtectedRoute from './components/AdminProtectedRoute'
 import './App.css'
+import Footer from "./components/Footer.tsx";
 
 function App() {
     return (
         <AuthProvider>
             <Router>
-                <Navbar />
+                <Navbar/>
                 <Routes>
-                    <Route path="/" element={<HomaPage />} />
+                    <Route path="/" element={<HomePage/>}/>
+
                     <Route
                         path="/signup"
                         element={
                             <PublicOnlyRoute>
-                                <Signup />
+                                <Signup/>
                             </PublicOnlyRoute>
                         }
                     />
@@ -30,7 +33,7 @@ function App() {
                         path="/login"
                         element={
                             <PublicOnlyRoute>
-                                <Login />
+                                <Login/>
                             </PublicOnlyRoute>
                         }
                     />
@@ -38,7 +41,7 @@ function App() {
                         path="/dashboard"
                         element={
                             <ProtectedRoute>
-                                <Dashboard />
+                                <Dashboard/>
                             </ProtectedRoute>
                         }
                     />
@@ -46,11 +49,12 @@ function App() {
                         path="/admin"
                         element={
                             <AdminProtectedRoute>
-                                <AdminDashboard />
+                                <AdminDashboard/>
                             </AdminProtectedRoute>
                         }
                     />
                 </Routes>
+                <Footer/>
             </Router>
         </AuthProvider>
     )

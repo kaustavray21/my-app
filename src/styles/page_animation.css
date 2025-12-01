@@ -1,0 +1,26 @@
+/* src/styles/page_animation.css */
+
+/* --- Global Style Enhancements for Pages --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.section-title {
+    font-weight: 700;
+    margin-bottom: 4rem;
+    text-align: center;
+}
+
+/* --- Reusable Animation for Sections --- */
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
