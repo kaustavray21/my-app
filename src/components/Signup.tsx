@@ -74,7 +74,7 @@ export default function Signup() {
                             className="
                                 w-full rounded-[20px] border border-[#c0c0c0]
                                 px-[15px] py-[12px] outline-none text-gray-700 text-sm
-                                focus:border-[#663F83] transition-colors
+                                focus:border-[#0d9488] transition-colors
                             "
                             required
                         />
@@ -90,7 +90,7 @@ export default function Signup() {
                             className="
                                 w-full rounded-[20px] border border-[#c0c0c0]
                                 px-[15px] py-[12px] outline-none text-gray-700 text-sm
-                                focus:border-[#663F83] transition-colors
+                                focus:border-[#0d9488] transition-colors
                             "
                             required
                         />
@@ -106,14 +106,14 @@ export default function Signup() {
                             className="
                                 w-full rounded-[20px] border border-[#c0c0c0]
                                 px-[15px] py-[12px] pr-10 outline-none text-gray-700 text-sm
-                                focus:border-[#663F83] transition-colors
+                                focus:border-[#0d9488] transition-colors
                             "
                             required
                         />
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#663F83] focus:outline-none"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#0d9488] focus:outline-none"
                         >
                             {showPassword ? (
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -138,14 +138,14 @@ export default function Signup() {
                             className="
                                 w-full rounded-[20px] border border-[#c0c0c0]
                                 px-[15px] py-[12px] pr-10 outline-none text-gray-700 text-sm
-                                focus:border-[#663F83] transition-colors
+                                focus:border-[#0d9488] transition-colors
                             "
                             required
                         />
                         <button
                             type="button"
                             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#663F83] focus:outline-none"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#0d9488] focus:outline-none"
                         >
                             {showConfirmPassword ? (
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -164,9 +164,9 @@ export default function Signup() {
                         type="submit"
                         className="
                             w-full py-[10px] px-[15px] rounded-[20px]
-                            bg-[#663F83] text-white font-[sans-serif]
+                            bg-[#0d9488] text-white font-[sans-serif]
                             shadow-[0_3px_8px_rgba(0,0,0,0.24)] cursor-pointer
-                            hover:bg-[#5a3675] active:shadow-none active:translate-y-[1px]
+                            hover:bg-[#0f766e] active:shadow-none active:translate-y-[1px]
                             transition-all duration-200
                         "
                     >
@@ -179,8 +179,8 @@ export default function Signup() {
                     <Link
                         to="/login"
                         className="
-                            ml-1 text-[11px] text-[#663F83] font-[800] underline
-                            decoration-[#663F83] hover:text-[#4d2f63]
+                            ml-1 text-[11px] text-[#0d9488] font-[800] underline
+                            decoration-[#0d9488] hover:text-[#0f766e]
                         "
                     >
                         Log in

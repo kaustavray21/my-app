@@ -10,9 +10,10 @@ export default function HomePage() {
     return (
         <main>
             <HeroSection/>
+            <FeaturedDestinationSection/>
             <StatusSection/>
             <AboutSection/>
-            <FeaturedDestinationSection/>
+
             <TestimonialsSection/>
             <FAQSection/>
             <SocialFollowSection/>

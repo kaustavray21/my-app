@@ -9,6 +9,9 @@ export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+    const role = localStorage.getItem('role');
+    const dashboardPath = role === 'admin' ? '/admin' : '/dashboard';
+
     const handleLogout = () => {
         logout();
         localStorage.removeItem('token');
@@ -16,7 +19,6 @@ export default function Navbar() {
         navigate('/');
     };
 
-    // Handle scroll effect for sticky navbar transparency/shadow
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 10);
@@ -25,9 +27,8 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Helper to handle hash navigation
     const handleNavClick = (hash: string) => {
-        setIsMobileMenuOpen(false); // Close mobile menu on click
+        setIsMobileMenuOpen(false);
         if (location.pathname === '/') {
             const element = document.getElementById(hash);
             if (element) {
@@ -38,36 +39,58 @@ export default function Navbar() {
         }
     };
 
-    // Reusable Tailwind classes for navigation links - Changed hover to Teal
-    const navLinkStyles = "text-[#495057] font-medium px-4 py-2 rounded-md transition-colors duration-200 hover:text-[#0d9488] hover:bg-[#f0fdfa]";
+    // LOGIC: Navbar is transparent ONLY if we are on the Home Page AND haven't scrolled down yet.
+    const isHomePage = location.pathname === '/';
+    const isTransparent = isHomePage && !isScrolled;
 
-    // New Gradient Sign Up Button Styles (Teal/Ocean Theme)
+    // --- Dynamic Styles based on isTransparent state ---
+
+    // Text Colors
+    const navTextClass = isTransparent
+        ? "text-white/90 hover:text-white"
+        : "text-gray-700 hover:text-[#0d9488]";
+
+    // Logo Colors
+    const logoColor = isTransparent ? "text-white" : "text-[#212529]";
+    const logoHighlight = isTransparent ? "text-teal-400" : "text-[#0d9488]";
+
+    // Backgrounds
+    const navBackground = isTransparent
+        ? "bg-transparent py-4"
+        : "bg-white/95 backdrop-blur-md shadow-sm py-2";
+
+    // Mobile Menu Styles
+    const mobileMenuBg = isTransparent ? "bg-black/90 backdrop-blur-md" : "bg-white";
+    const mobileMenuText = isTransparent ? "text-white hover:text-teal-400" : "text-gray-700 hover:text-[#0d9488]";
+    const mobileMenuButtonColor = isTransparent ? "text-white" : "text-gray-600";
+
+    // Button Styles
     const signUpButtonStyles = `
-        flex justify-center items-center gap-2 w-32 h-10 cursor-pointer rounded-md shadow-2xl text-white font-semibold 
-        bg-gradient-to-r from-[#2dd4bf] via-[#0d9488] to-[#115e59] 
-        hover:shadow-xl hover:shadow-teal-500 hover:scale-105 duration-300 
-        hover:from-[#115e59] hover:to-[#2dd4bf] no-underline ml-2
+        flex justify-center items-center gap-2 w-32 h-10 cursor-pointer rounded-md shadow-lg font-semibold 
+        transition-all duration-300 no-underline ml-2
+        ${!isTransparent
+        ? 'bg-gradient-to-r from-[#2dd4bf] via-[#0d9488] to-[#115e59] text-white hover:shadow-teal-500/50'
+        : 'bg-white text-teal-800 hover:bg-gray-100'}
     `;
 
     return (
         <nav
             className={`
-                fixed top-0 left-0 w-full z-50 transition-all duration-300 font-sans
-                ${isScrolled ? 'bg-[#f1f0f1]/95 shadow-sm py-2' : 'bg-[#f1f0f1] py-3'}
-                border-b border-gray-200
+                fixed top-0 left-0 w-full z-50 transition-all duration-500 font-sans
+                ${navBackground}
             `}
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center">
 
-                    {/* Logo - Updated highlight color */}
-                    <Link to="/" className="text-2xl font-serif font-bold text-[#212529] no-underline">
-                        Tour-<span className="text-[#0d9488]">Planner</span>
+                    {/* Logo */}
+                    <Link to="/" className={`text-2xl font-serif font-bold no-underline transition-colors duration-300 ${logoColor}`}>
+                        Tour-<span className={logoHighlight}>Planner</span>
                     </Link>
 
                     {/* Mobile Menu Button */}
                     <button
-                        className="lg:hidden p-2 text-gray-600 focus:outline-none"
+                        className={`lg:hidden p-2 focus:outline-none ${mobileMenuButtonColor}`}
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,11 +99,11 @@ export default function Navbar() {
                     </button>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden lg:flex items-center space-x-1">
-                        <button onClick={() => handleNavClick('about')} className={navLinkStyles}>About</button>
-                        <button onClick={() => handleNavClick('status')} className={navLinkStyles}>Features</button>
-                        <button onClick={() => handleNavClick('faq')} className={navLinkStyles}>FAQ</button>
-                        <button onClick={() => handleNavClick('reviews')} className={navLinkStyles}>Reviews</button>
+                    <div className="hidden lg:flex items-center space-x-6">
+                        <button onClick={() => handleNavClick('about')} className={`font-medium px-2 py-2 transition-colors duration-200 ${navTextClass}`}>About</button>
+                        <button onClick={() => handleNavClick('status')} className={`font-medium px-2 py-2 transition-colors duration-200 ${navTextClass}`}>Features</button>
+                        <button onClick={() => handleNavClick('faq')} className={`font-medium px-2 py-2 transition-colors duration-200 ${navTextClass}`}>FAQ</button>
+                        <button onClick={() => handleNavClick('reviews')} className={`font-medium px-2 py-2 transition-colors duration-200 ${navTextClass}`}>Reviews</button>
                     </div>
 
                     {/* Desktop Auth Buttons */}
@@ -88,14 +111,14 @@ export default function Navbar() {
                         {isAuthenticated ? (
                             <>
                                 <Link
-                                    to="/dashboard"
-                                    className="bg-[#0d9488] text-white px-4 py-2 rounded-[5px] hover:bg-[#0f766e] transition-colors duration-200 font-medium no-underline"
+                                    to={dashboardPath}
+                                    className={`px-4 py-2 rounded-[5px] font-medium no-underline transition-colors duration-200 ${!isTransparent ? 'bg-[#0d9488] text-white hover:bg-[#0f766e]' : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'}`}
                                 >
                                     Dashboard
                                 </Link>
                                 <button
                                     onClick={handleLogout}
-                                    className="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-[5px] hover:bg-gray-50 transition-colors duration-200 font-medium cursor-pointer"
+                                    className={`border px-4 py-2 rounded-[5px] font-medium cursor-pointer transition-colors duration-200 ${!isTransparent ? 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50' : 'bg-transparent border-white/50 text-white hover:bg-white/10'}`}
                                 >
                                     Logout
                                 </button>
@@ -104,7 +127,7 @@ export default function Navbar() {
                             <>
                                 <Link
                                     to="/login"
-                                    className="text-[#495057] font-medium px-4 py-2 rounded-[0.375rem] hover:bg-[#f1f3f5] transition-colors duration-200 no-underline"
+                                    className={`font-medium px-4 py-2 rounded-[0.375rem] transition-colors duration-200 no-underline ${navTextClass}`}
                                 >
                                     Log In
                                 </Link>
@@ -121,33 +144,30 @@ export default function Navbar() {
 
                 {/* Mobile Menu Dropdown */}
                 <div className={`lg:hidden overflow-hidden transition-all duration-300 ${isMobileMenuOpen ? 'max-h-96 mt-4' : 'max-h-0'}`}>
-                    <div className="flex flex-col space-y-2 pb-4">
-                        <button onClick={() => handleNavClick('about')} className={`${navLinkStyles} text-left`}>About</button>
-                        <button onClick={() => handleNavClick('status')} className={`${navLinkStyles} text-left`}>Features</button>
-                        <button onClick={() => handleNavClick('faq')} className={`${navLinkStyles} text-left`}>FAQ</button>
-                        <button onClick={() => handleNavClick('reviews')} className={`${navLinkStyles} text-left`}>Reviews</button>
+                    <div className={`${mobileMenuBg} rounded-xl p-4 flex flex-col space-y-2 shadow-xl`}>
+                        <button onClick={() => handleNavClick('about')} className={`${mobileMenuText} text-left py-2`}>About</button>
+                        <button onClick={() => handleNavClick('status')} className={`${mobileMenuText} text-left py-2`}>Features</button>
+                        <button onClick={() => handleNavClick('faq')} className={`${mobileMenuText} text-left py-2`}>FAQ</button>
+                        <button onClick={() => handleNavClick('reviews')} className={`${mobileMenuText} text-left py-2`}>Reviews</button>
 
-                        <div className="border-t border-gray-200 pt-3 mt-2 flex flex-col space-y-3">
+                        <div className="border-t border-gray-200/20 pt-3 mt-2 flex flex-col space-y-3">
                             {isAuthenticated ? (
                                 <>
-                                    <Link to="/dashboard" className="bg-[#0d9488] text-white px-4 py-2 rounded text-center no-underline">
+                                    <Link to={dashboardPath} className="bg-teal-600 text-white px-4 py-2 rounded text-center no-underline">
                                         Dashboard
                                     </Link>
-                                    <button onClick={handleLogout} className="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded text-center">
+                                    <button onClick={handleLogout} className={`bg-transparent border text-center px-4 py-2 rounded ${isTransparent ? 'border-gray-500 text-white' : 'border-gray-300 text-gray-700'}`}>
                                         Logout
                                     </button>
                                 </>
                             ) : (
                                 <>
-                                    <Link to="/login" className="text-[#495057] font-medium px-4 py-2 hover:bg-[#f1f3f5] rounded text-center no-underline">
+                                    <Link to="/login" className={`text-center py-2 no-underline ${mobileMenuText}`}>
                                         Log In
                                     </Link>
                                     <div className="flex justify-center">
-                                        <Link to="/signup" className={signUpButtonStyles}>
+                                        <Link to="/signup" className="w-full bg-white text-teal-900 font-bold py-2 rounded-md text-center no-underline border border-gray-200">
                                             Sign Up
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
                                         </Link>
                                     </div>
                                 </>

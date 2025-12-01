@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
 
 interface User {
     _id: string
@@ -11,7 +10,6 @@ interface User {
 
 export default function AdminDashboard() {
     const [users, setUsers] = useState<User[]>([])
-    const { logout } = useAuth() // <--- Get logout function from context
     const navigate = useNavigate()
 
     const fetchUsers = async () => {
@@ -54,13 +52,6 @@ export default function AdminDashboard() {
         }
     }
 
-    const handleLogout = () => {
-        logout() // <--- Call context logout to update app state
-        localStorage.removeItem('token')
-        localStorage.removeItem('role')
-        navigate('/')
-    }
-
     useEffect(() => {
         fetchUsers()
     }, [])
@@ -69,12 +60,6 @@ export default function AdminDashboard() {
         <div className="min-h-screen bg-gray-100 p-8">
             <div className="mb-8 flex items-center justify-between">
                 <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-                <button
-                    onClick={handleLogout}
-                    className="rounded-md bg-gray-600 px-4 py-2 text-white hover:bg-gray-700 cursor-pointer"
-                >
-                    Logout
-                </button>
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {users.map((user) => (
