@@ -1,7 +1,7 @@
 import HeroSection from './home/HeroSection';
 import StatusSection from './home/StatusSection';
 import AboutSection from './home/AboutSection';
-import FeaturedCoursesSection from './home/FeaturedCoursesSection';
+import FeaturedDestinationSection from './home/FeaturedDestinationSection.tsx';
 import TestimonialsSection from './home/TestimonialsSection';
 import FAQSection from "./home/FAQSection.tsx";
 import SocialFollowSection from "./home/SocialFollowSection.tsx";
@@ -12,7 +12,7 @@ export default function HomePage() {
             <HeroSection/>
             <StatusSection/>
             <AboutSection/>
-            <FeaturedCoursesSection/>
+            <FeaturedDestinationSection/>
             <TestimonialsSection/>
             <FAQSection/>
             <SocialFollowSection/>

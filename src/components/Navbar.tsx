@@ -38,15 +38,15 @@ export default function Navbar() {
         }
     };
 
-    // Reusable Tailwind classes for navigation links
-    const navLinkStyles = "text-[#495057] font-medium px-4 py-2 rounded-md transition-colors duration-200 hover:text-[#6f42c1] hover:bg-[#f1f3f5]";
+    // Reusable Tailwind classes for navigation links - Changed hover to Teal
+    const navLinkStyles = "text-[#495057] font-medium px-4 py-2 rounded-md transition-colors duration-200 hover:text-[#0d9488] hover:bg-[#f0fdfa]";
 
-    // New Gradient Sign Up Button Styles (Purple Theme)
+    // New Gradient Sign Up Button Styles (Teal/Ocean Theme)
     const signUpButtonStyles = `
         flex justify-center items-center gap-2 w-32 h-10 cursor-pointer rounded-md shadow-2xl text-white font-semibold 
-        bg-gradient-to-r from-[#a855f7] via-[#7e22ce] to-[#581c87] 
-        hover:shadow-xl hover:shadow-purple-500 hover:scale-105 duration-300 
-        hover:from-[#581c87] hover:to-[#a855f7] no-underline ml-2
+        bg-gradient-to-r from-[#2dd4bf] via-[#0d9488] to-[#115e59] 
+        hover:shadow-xl hover:shadow-teal-500 hover:scale-105 duration-300 
+        hover:from-[#115e59] hover:to-[#2dd4bf] no-underline ml-2
     `;
 
     return (
@@ -60,9 +60,9 @@ export default function Navbar() {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center">
 
-                    {/* Logo */}
+                    {/* Logo - Updated highlight color */}
                     <Link to="/" className="text-2xl font-serif font-bold text-[#212529] no-underline">
-                        InCuise<span className="text-[#6f42c1]">Nix</span>
+                        Tour-<span className="text-[#0d9488]">Planner</span>
                     </Link>
 
                     {/* Mobile Menu Button */}
@@ -89,7 +89,7 @@ export default function Navbar() {
                             <>
                                 <Link
                                     to="/dashboard"
-                                    className="bg-[#6a0dc5] text-white px-4 py-2 rounded-[5px] hover:bg-[#580bad] transition-colors duration-200 font-medium no-underline"
+                                    className="bg-[#0d9488] text-white px-4 py-2 rounded-[5px] hover:bg-[#0f766e] transition-colors duration-200 font-medium no-underline"
                                 >
                                     Dashboard
                                 </Link>
@@ -130,7 +130,7 @@ export default function Navbar() {
                         <div className="border-t border-gray-200 pt-3 mt-2 flex flex-col space-y-3">
                             {isAuthenticated ? (
                                 <>
-                                    <Link to="/dashboard" className="bg-[#6a0dc5] text-white px-4 py-2 rounded text-center no-underline">
+                                    <Link to="/dashboard" className="bg-[#0d9488] text-white px-4 py-2 rounded text-center no-underline">
                                         Dashboard
                                     </Link>
                                     <button onClick={handleLogout} className="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded text-center">

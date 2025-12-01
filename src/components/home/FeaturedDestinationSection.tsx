@@ -1,47 +1,46 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-interface Course {
+interface Destination {
     id: number;
     title: string;
     description: string;
     image: string;
     rating: number;
     reviewCount: string;
-    color: string; // For the placeholder image text background
+    price: string;
 }
 
-const courses: Course[] = [
+const destinations: Destination[] = [
     {
         id: 1,
-        title: "Python for Beginners",
-        description: "A comprehensive introduction to the Python programming language.",
-        image: "https://placehold.co/600x400/000000/FFFFFF?text=Python",
-        rating: 4.8,
-        reviewCount: "1,250",
-        color: "text-black"
+        title: "Bali, Indonesia",
+        description: "Experience the tropical paradise with pristine beaches and vibrant culture.",
+        image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=600&auto=format&fit=crop",
+        rating: 4.9,
+        reviewCount: "2,400",
+        price: "$899"
     },
     {
         id: 2,
-        title: "Django Web Development",
-        description: "Build powerful web applications with the Django framework.",
-        image: "https://placehold.co/600x400/228B22/FFFFFF?text=Django",
-        rating: 4.9,
-        reviewCount: "980",
-        color: "text-green-700"
+        title: "Kyoto, Japan",
+        description: "Immerse yourself in history with ancient temples and cherry blossoms.",
+        image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=600&auto=format&fit=crop",
+        rating: 4.8,
+        reviewCount: "1,850",
+        price: "$1,200"
     },
     {
         id: 3,
-        title: "Modern Frontend with React",
-        description: "Create interactive user interfaces with the React.js library.",
-        image: "https://placehold.co/600x400/6f42c1/FFFFFF?text=React",
-        rating: 4.7,
-        reviewCount: "1,500",
-        color: "text-purple-600"
+        title: "Santorini, Greece",
+        description: "Enjoy stunning sunsets and white-washed architecture by the sea.",
+        image: "https://images.unsplash.com/photo-1613395877344-13d4c79e4284?q=80&w=600&auto=format&fit=crop",
+        rating: 5.0,
+        reviewCount: "3,100",
+        price: "$1,500"
     }
 ];
 
-// Helper component for Star Icons
 const StarIcon = ({ filled, half }: { filled?: boolean; half?: boolean }) => {
     if (half) {
         return (
@@ -63,7 +62,7 @@ const StarIcon = ({ filled, half }: { filled?: boolean; half?: boolean }) => {
     );
 };
 
-export default function FeaturedCoursesSection() {
+export default function FeaturedDestinationSection() {
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef<HTMLElement>(null);
 
@@ -96,46 +95,52 @@ export default function FeaturedCoursesSection() {
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-gray-900 section-title">
-                    Explore Our Popular Courses
+                    Top Trending Destinations
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {courses.map((course) => (
-                        <div key={course.id} className="group">
-                            {/* We use a div here instead of Link since the route might not exist yet,
-                                but in a real app this would point to specific course pages */}
+                    {destinations.map((dest) => (
+                        <div key={dest.id} className="group">
                             <Link to="#" className="block h-full no-underline">
                                 <div className="
                                     bg-white rounded-xl shadow-sm overflow-hidden h-full flex flex-col
                                     transition-all duration-300 ease-in-out border border-transparent
-                                    group-hover:-translate-y-2 group-hover:shadow-[0_1rem_1.5rem_rgba(0,0,0,0.1)]
+                                    group-hover:-translate-y-2 group-hover:shadow-lg
                                 ">
-                                    <img
-                                        src={course.image}
-                                        alt={course.title}
-                                        className="w-full h-48 object-cover"
-                                    />
+                                    <div className="relative h-48 overflow-hidden">
+                                        <img
+                                            src={dest.image}
+                                            alt={dest.title}
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                        />
+                                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-teal-700 shadow-sm">
+                                            {dest.price}
+                                        </div>
+                                    </div>
                                     <div className="p-6 flex flex-col flex-grow">
                                         <h5 className="
                                             text-xl font-bold text-gray-900 mb-2
                                             transition-colors duration-200
-                                            group-hover:text-[#663F83]
+                                            group-hover:text-teal-600
                                         ">
-                                            {course.title}
+                                            {dest.title}
                                         </h5>
                                         <p className="text-gray-500 mb-4 flex-grow">
-                                            {course.description}
+                                            {dest.description}
                                         </p>
 
-                                        <div className="flex items-center mt-auto">
-                                            <div className="flex space-x-1">
-                                                {[...Array(4)].map((_, i) => (
-                                                    <StarIcon key={i} filled />
-                                                ))}
-                                                <StarIcon key={4} filled={course.rating === 5} half={course.rating < 5} />
+                                        <div className="flex items-center justify-between mt-auto">
+                                            <div className="flex items-center">
+                                                <div className="flex space-x-1">
+                                                    <StarIcon filled />
+                                                    <StarIcon filled />
+                                                    <StarIcon filled />
+                                                    <StarIcon filled />
+                                                    <StarIcon filled={dest.rating === 5} half={dest.rating < 5} />
+                                                </div>
+                                                <span className="ml-2 text-sm text-gray-400">({dest.reviewCount})</span>
                                             </div>
-                                            <span className="ml-2 font-bold text-yellow-500">{course.rating}</span>
-                                            <span className="ml-2 text-sm text-gray-400">({course.reviewCount} ratings)</span>
+                                            <span className="text-sm font-semibold text-teal-600">7 Days</span>
                                         </div>
                                     </div>
                                 </div>

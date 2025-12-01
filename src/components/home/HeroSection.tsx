@@ -5,56 +5,56 @@ export default function HeroSection() {
     const { isAuthenticated } = useAuth();
 
     return (
-        <section className="bg-gray-50 py-24 overflow-hidden">
+        <section className="bg-blue-50 py-24 overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col lg:flex-row items-center">
-                    {/* Text Container with Slide In Animation */}
                     <div className="w-full lg:w-1/2 mb-10 lg:mb-0 z-10 animate-[slideInLeft_0.8s_ease-out]">
                         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
-                            Unlock Your Potential
+                            Discover Your Next <span className="text-teal-600">Adventure</span>
                         </h1>
                         <p className="text-lg sm:text-xl text-gray-500 mt-4 md:w-10/12">
-                            Join a community of learners and take your skills to the next level with our expert-led courses.
+                            Explore breathtaking destinations, curated tours, and unforgettable experiences. The world is waiting for you.
                         </p>
 
                         <div className="mt-8">
                             {isAuthenticated ? (
                                 <Link to="/dashboard" className="inline-block no-underline">
                                     <button className="
-                                        bg-[#663F83] text-white
+                                        bg-teal-600 text-white
                                         font-bold text-xl px-6 py-2 rounded-lg
                                         transform perspective-[500px] [transform:rotateY(-20deg)]
                                         shadow-[calc(-1*0.08em)_0.01em_2px_rgba(0,0,0,0.25)]
                                         transition-all duration-300
                                         hover:[transform:rotateY(0deg)] hover:shadow-xl
+                                        hover:bg-teal-700
                                         cursor-pointer
                                     ">
-                                        Go to Dashboard
+                                        View My Bookings
                                     </button>
                                 </Link>
                             ) : (
                                 <Link to="/signup" className="inline-block no-underline">
                                     <button className="
-                                        bg-[#663F83] text-white
+                                        bg-teal-600 text-white
                                         font-bold text-xl px-6 py-2 rounded-lg
                                         transform perspective-[500px] [transform:rotateY(-20deg)]
                                         shadow-[calc(-1*0.08em)_0.01em_2px_rgba(0,0,0,0.25)]
                                         transition-all duration-300
                                         hover:[transform:rotateY(0deg)] hover:shadow-xl
+                                        hover:bg-teal-700
                                         cursor-pointer
                                     ">
-                                        Get Started Now
+                                        Start Your Journey
                                     </button>
                                 </Link>
                             )}
                         </div>
                     </div>
 
-                    {/* Image Container with Fade In Animation and 3D Effect */}
                     <div className="w-full lg:w-1/2 mt-8 lg:mt-0 relative perspective-[1500px] animate-[fadeInRight_0.8s_ease-out]">
                         <img
-                            src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto-format&fit=crop"
-                            alt="Developer coding on a laptop"
+                            src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop"
+                            alt="Scenic mountain landscape"
                             className="
                                 w-full h-auto rounded-2xl shadow-2xl object-cover
                                 transform [transform:rotateY(-15deg)_rotateX(5deg)]
@@ -66,7 +66,6 @@ export default function HeroSection() {
                 </div>
             </div>
 
-            {/* Internal styles for specific keyframes to avoid external CSS */}
             <style>{`
                 @keyframes slideInLeft {
                     from { transform: translateX(-50px); opacity: 0; }
