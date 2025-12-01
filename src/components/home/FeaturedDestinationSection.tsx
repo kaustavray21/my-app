@@ -2,18 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 interface Destination {
-    _id: string; // MongoDB uses _id
+    _id: string;
     title: string;
     location: string;
     description: string;
     image: string;
     rating: number;
     reviewCount: string;
-    price: string;
     category: string;
 }
 
-// Helper component for Star Icons (Keep this as is)
 const StarIcon = ({ filled }: { filled?: boolean; half?: boolean }) => {
     return (
         <svg className={`w-4 h-4 ${filled ? 'text-yellow-400' : 'text-gray-300'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
@@ -26,9 +24,12 @@ export default function FeaturedDestinationSection() {
     const [destinations, setDestinations] = useState<Destination[]>([]);
     const [loading, setLoading] = useState(true);
     const [isVisible, setIsVisible] = useState(false);
+
+    // New state to control how many items to show
+    const [showAll, setShowAll] = useState(false);
+
     const sectionRef = useRef<HTMLElement>(null);
 
-    // Fetch data from API
     useEffect(() => {
         const fetchDestinations = async () => {
             try {
@@ -49,8 +50,9 @@ export default function FeaturedDestinationSection() {
         fetchDestinations();
     }, []);
 
-    // Animation Observer
     useEffect(() => {
+        if (loading) return;
+
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -66,7 +68,10 @@ export default function FeaturedDestinationSection() {
         }
 
         return () => observer.disconnect();
-    }, []);
+    }, [loading]);
+
+    // Determine which destinations to display based on showAll state
+    const displayedDestinations = showAll ? destinations : destinations.slice(0, 3);
 
     if (loading) {
         return (
@@ -86,20 +91,34 @@ export default function FeaturedDestinationSection() {
             `}
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <span className="text-teal-600 font-bold tracking-wider uppercase text-sm mb-2 block">
-                        Discover Jharkhand
-                    </span>
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 section-title">
-                        Must-Visit Destinations
-                    </h2>
-                    <p className="text-gray-500 max-w-2xl mx-auto mt-4">
-                        From sacred temples to roaring waterfalls, explore the hidden gems of nature's own abode.
-                    </p>
+
+                {/* Header Section with Button at Top Right */}
+                <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+                    <div className="text-left max-w-2xl mb-6 md:mb-0">
+                        <span className="text-teal-600 font-bold tracking-wider uppercase text-sm mb-2 block">
+                            Discover Jharkhand
+                        </span>
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 section-title">
+                            Must-Visit Destinations
+                        </h2>
+                        <p className="text-gray-500 mt-4 text-lg">
+                            From sacred temples to roaring waterfalls, explore the hidden gems of nature's own abode.
+                        </p>
+                    </div>
+
+                    {/* Toggle Button Moved Here */}
+                    {destinations.length > 3 && (
+                        <button
+                            onClick={() => setShowAll(!showAll)}
+                            className="px-8 py-3 bg-white border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 hover:border-gray-400 transition-all shadow-sm cursor-pointer whitespace-nowrap"
+                        >
+                            {showAll ? "Show Less" : "View All Destinations"}
+                        </button>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {destinations.map((dest) => (
+                    {displayedDestinations.map((dest) => (
                         <div key={dest._id} className="group relative">
                             <Link to="#" className="block h-full no-underline">
                                 <div className="
@@ -107,7 +126,6 @@ export default function FeaturedDestinationSection() {
                                     transition-all duration-300 ease-in-out border border-gray-100
                                     group-hover:-translate-y-2 group-hover:shadow-xl
                                 ">
-                                    {/* Image Container */}
                                     <div className="relative h-64 overflow-hidden">
                                         <img
                                             src={dest.image}
@@ -117,13 +135,9 @@ export default function FeaturedDestinationSection() {
                                         <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-white shadow-sm border border-white/20">
                                             {dest.category}
                                         </div>
-                                        <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-lg text-sm font-bold text-teal-800 shadow-md">
-                                            {dest.price}
-                                        </div>
                                         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                     </div>
 
-                                    {/* Content */}
                                     <div className="p-6 flex flex-col flex-grow relative">
                                         <div className="mb-2">
                                             <h5 className="text-xl font-bold text-gray-900 group-hover:text-teal-600 transition-colors">
@@ -158,11 +172,7 @@ export default function FeaturedDestinationSection() {
                     ))}
                 </div>
 
-                <div className="text-center mt-12">
-                    <button className="px-8 py-3 bg-white border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 hover:border-gray-400 transition-all shadow-sm">
-                        View All Destinations
-                    </button>
-                </div>
+                {/* Bottom button removed */}
             </div>
         </section>
     );

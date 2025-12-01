@@ -7,7 +7,6 @@ const DestinationSchema = new mongoose.Schema({
     image: { type: String, required: true },
     rating: { type: Number, required: true },
     reviewCount: { type: String, required: true },
-    price: { type: String, required: true },
     category: { type: String, required: true }
 });
 
