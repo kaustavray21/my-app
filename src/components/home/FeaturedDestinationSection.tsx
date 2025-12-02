@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
+
+import { EffectCoverflow, Pagination, Mousewheel } from "swiper/modules";
 
 interface Destination {
     _id: string;
@@ -54,53 +55,65 @@ export default function FeaturedDestinationSection() {
     return (
         <section className="py-20 bg-gray-50 overflow-hidden">
             <div className="container mx-auto px-4">
-                {/* Header */}
-                <div className="text-center mb-8">
-          <span className="text-teal-600 font-bold tracking-wider uppercase text-sm mb-2 block">
-            Discover Jharkhand
-          </span>
+                <div className="text-center mb-12">
+                    <span className="text-teal-600 font-bold tracking-wider uppercase text-sm mb-2 block">
+                        Discover Jharkhand
+                    </span>
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
                         Must-Visit Destinations
                     </h2>
                 </div>
 
-                {/* FIXED OUTER CONTAINER */}
-                <div className="relative w-full max-w-6xl mx-auto h-[540px] flex items-center justify-center">
-
+                {/* FIX: Added Mask Image styles here.
+                    This creates a fade effect on the left and right edges,
+                    hiding cards that are too far away and making exactly ~5 visible.
+                */}
+                <div
+                    className="relative w-full max-w-[1400px] mx-auto flex items-center justify-center"
+                    style={{
+                        maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+                        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)'
+                    }}
+                >
                     <Swiper
                         effect="coverflow"
-                        grabCursor
-                        centeredSlides
-                        loop
-                        slidesPerView={3}              // FIXED VALUE → stops cropping bugs
-                        spaceBetween={40}
+                        grabCursor={true}
+                        centeredSlides={true}
+                        loop={true}
+                        slidesPerView={'auto'}
+                        spaceBetween={0}
                         coverflowEffect={{
                             rotate: 0,
                             stretch: 0,
-                            depth: 150,
+                            depth: 100,
                             modifier: 2.5,
                             slideShadows: false,
                         }}
-                        autoplay={{
-                            delay: 2800,
-                            disableOnInteraction: false,
+                        mousewheel={{
+                            thresholdDelta: 50,
+                            forceToAxis: true,
                         }}
                         pagination={{ clickable: true }}
-                        modules={[EffectCoverflow, Pagination, Autoplay]}
+                        modules={[EffectCoverflow, Pagination, Mousewheel]}
                         breakpoints={{
-                            0: { slidesPerView: 1 },
-                            640: { slidesPerView: 2 },
-                            1024: { slidesPerView: 3 },
+                            0: { slidesPerView: 1, spaceBetween: 10 },
+                            640: { slidesPerView: 'auto', spaceBetween: 20 },
+                            1024: { slidesPerView: 'auto', spaceBetween: 0 },
                         }}
-                        className="w-full pb-10"
+                        // Removed loopedSlides prop to fix TS Error
+                        className="w-full !overflow-visible pt-12 pb-20 px-4"
+                        style={{
+                            paddingBottom: '60px'
+                        }}
                     >
                         {destinations.map((dest) => (
-                            <SwiperSlide key={dest._id}>
+                            <SwiperSlide
+                                key={dest._id}
+                                className="transition-all duration-500 !w-[320px]"
+                            >
+                                {/* Corrected Color: #f3fad7 */}
+                                <div className="relative flex flex-col rounded-xl bg-[#f3fad7] shadow-lg h-[430px] w-full">
 
-                                {/* ORIGINAL CARD STYLE KEPT */}
-                                <div className="relative flex flex-col rounded-xl bg-white shadow-lg h-[430px] mx-auto w-[300px]">
-
-                                    {/* Image Section (fixed height) */}
                                     <div className="relative mx-4 -mt-10 h-56 overflow-hidden rounded-xl shadow-lg shadow-teal-500/40">
                                         <img
                                             src={dest.image}
@@ -112,29 +125,25 @@ export default function FeaturedDestinationSection() {
                                             }}
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-teal-900/40 to-transparent"></div>
-
                                         <div className="absolute top-2 right-2 bg-white/20 backdrop-blur-md px-2 py-1 rounded text-xs font-bold border border-white/30">
                                             {dest.category}
                                         </div>
                                     </div>
 
-                                    {/* CARD TEXT */}
                                     <div className="p-6">
                                         <div className="flex items-center justify-between mb-2">
                                             <h5 className="text-xl font-bold text-teal-900">
                                                 {dest.title}
                                             </h5>
                                             <span className="text-sm font-semibold text-yellow-500 bg-yellow-50 px-2 py-1 rounded">
-                        ★ {dest.rating}
-                      </span>
+                                                ★ {dest.rating}
+                                            </span>
                                         </div>
-
                                         <p className="text-sm text-gray-600 line-clamp-3">
                                             {dest.description}
                                         </p>
                                     </div>
 
-                                    {/* BUTTON */}
                                     <div className="px-6 pb-6 mt-auto">
                                         <Link
                                             to="#"
@@ -143,7 +152,6 @@ export default function FeaturedDestinationSection() {
                                             Explore Location
                                         </Link>
                                     </div>
-
                                 </div>
                             </SwiperSlide>
                         ))}
