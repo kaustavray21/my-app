@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+
 import { EffectCoverflow, Pagination, Mousewheel } from "swiper/modules";
 
 interface Destination {

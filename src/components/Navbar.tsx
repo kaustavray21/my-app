@@ -100,10 +100,12 @@ export default function Navbar() {
 
                     {/* Desktop Navigation */}
                     <div className="hidden lg:flex items-center space-x-8">
-                        <button onClick={() => handleNavClick('about')} className={`font-medium text-lg px-2 py-2 transition-colors duration-200 ${navTextClass}`}>About</button>
-                        <button onClick={() => handleNavClick('status')} className={`font-medium text-lg px-2 py-2 transition-colors duration-200 ${navTextClass}`}>Features</button>
-                        <button onClick={() => handleNavClick('faq')} className={`font-medium text-lg px-2 py-2 transition-colors duration-200 ${navTextClass}`}>FAQ</button>
-                        <button onClick={() => handleNavClick('reviews')} className={`font-medium text-lg px-2 py-2 transition-colors duration-200 ${navTextClass}`}>Reviews</button>
+                        <button onClick={() => handleNavClick('about')} className={`font-medium text-lg px-2 py-2 transition-colors duration-200 cursor-pointer ${navTextClass}`}>About</button>
+                        <button onClick={() => handleNavClick('status')} className={`font-medium text-lg px-2 py-2 transition-colors duration-200 cursor-pointer ${navTextClass}`}>Features</button>
+                        <button onClick={() => handleNavClick('faq')} className={`font-medium text-lg px-2 py-2 transition-colors duration-200 cursor-pointer ${navTextClass}`}>FAQ</button>
+                        <button onClick={() => handleNavClick('reviews')} className={`font-medium text-lg px-2 py-2 transition-colors duration-200 cursor-pointer ${navTextClass}`}>Reviews</button>
+                        {/* Business Link Added Here */}
+                        <Link to="/business" className={`font-medium text-lg px-2 py-2 transition-colors duration-200 no-underline ${navTextClass}`}>Business</Link>
                     </div>
 
                     {/* Desktop Auth Buttons */}
@@ -143,12 +145,14 @@ export default function Navbar() {
                 </div>
 
                 {/* Mobile Menu Dropdown */}
-                <div className={`lg:hidden overflow-hidden transition-all duration-300 ${isMobileMenuOpen ? 'max-h-96 mt-6' : 'max-h-0'}`}>
+                <div className={`lg:hidden overflow-hidden transition-all duration-300 ${isMobileMenuOpen ? 'max-h-[500px] mt-6' : 'max-h-0'}`}>
                     <div className={`${mobileMenuBg} rounded-xl p-6 flex flex-col space-y-4 shadow-xl`}>
-                        <button onClick={() => handleNavClick('about')} className={`${mobileMenuText} text-left py-2 text-lg`}>About</button>
-                        <button onClick={() => handleNavClick('status')} className={`${mobileMenuText} text-left py-2 text-lg`}>Features</button>
-                        <button onClick={() => handleNavClick('faq')} className={`${mobileMenuText} text-left py-2 text-lg`}>FAQ</button>
-                        <button onClick={() => handleNavClick('reviews')} className={`${mobileMenuText} text-left py-2 text-lg`}>Reviews</button>
+                        <button onClick={() => handleNavClick('about')} className={`${mobileMenuText} text-left py-2 text-lg cursor-pointer`}>About</button>
+                        <button onClick={() => handleNavClick('status')} className={`${mobileMenuText} text-left py-2 text-lg cursor-pointer`}>Features</button>
+                        <button onClick={() => handleNavClick('faq')} className={`${mobileMenuText} text-left py-2 text-lg cursor-pointer`}>FAQ</button>
+                        <button onClick={() => handleNavClick('reviews')} className={`${mobileMenuText} text-left py-2 text-lg cursor-pointer`}>Reviews</button>
+                        {/* Business Link Added Here (Mobile) */}
+                        <Link to="/business" onClick={() => setIsMobileMenuOpen(false)} className={`${mobileMenuText} text-left py-2 text-lg no-underline`}>Business</Link>
 
                         <div className="border-t border-gray-200/20 pt-4 mt-2 flex flex-col space-y-4">
                             {isAuthenticated ? (

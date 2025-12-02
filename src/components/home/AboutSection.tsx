@@ -35,7 +35,7 @@ export default function AboutSection() {
             <div className="grid grid-cols-1 gap-12">
                 <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 section-title">
-                        About InCuiseNix Travels
+                        About Tour--Planner
                     </h2>
                     <p className="text-xl text-gray-500 leading-relaxed">
                         We believe that travel is the only thing you buy that makes you richer. Our team of dedicated explorers is committed to curating the most authentic and immersive travel experiences for you, ensuring every journey creates memories that last a lifetime.

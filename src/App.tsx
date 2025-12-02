@@ -5,6 +5,7 @@ import Signup from './components/Signup'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import HomePage from './components/HomePage'
+import BusinessOpportunities from './components/BusinessOpportunities' // Import here
 
 import AdminDashboard from './components/AdminDashboard'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -20,6 +21,8 @@ function App() {
                 <Navbar/>
                 <Routes>
                     <Route path="/" element={<HomePage/>}/>
+                    {/* New Route */}
+                    <Route path="/business" element={<BusinessOpportunities/>}/>
 
                     <Route
                         path="/signup"
