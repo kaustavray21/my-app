@@ -26,6 +26,56 @@ router.post('/signup', async (req: any, res: any) => {
     }
 });
 
+// New Route: Register as Guide
+router.post('/register-guide', async (req: any, res: any) => {
+    try {
+        const {
+            name,
+            email,
+            mobile,
+            dob,
+            aadhaar,
+            pan,
+            address,
+            district,
+            city
+        } = req.body;
+
+        // Check if email already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ error: 'Email already exists' });
+        }
+
+        // Hash the mobile number to use as the password
+        const hashedPassword = await bcrypt.hash(mobile, 10);
+
+        const newGuide = new User({
+            username: name, // Using name as username for display
+            name,
+            email,
+            password: hashedPassword,
+            mobile,
+            dob,
+            aadhaar,
+            pan,
+            address,
+            district,
+            city,
+            role: 'guide',
+            isVerified: false // Explicitly set to false
+        });
+
+        await newGuide.save();
+        res.status(201).json({ message: 'Guide registration successful. Verification pending.' });
+    } catch (error: any) {
+        if (error.code === 11000) {
+            return res.status(400).json({ error: 'Email or Username already exists' });
+        }
+        res.status(500).json({ error: 'Error registering guide', details: error.message });
+    }
+});
+
 router.post('/login', async (req: any, res: any) => {
     try {
         const { email, password } = req.body;
@@ -33,6 +83,12 @@ router.post('/login', async (req: any, res: any) => {
         if (!user) {
             return res.status(400).json({ error: 'User not found' });
         }
+
+        // Check verification for guides
+        if (user.role === 'guide' && !user.isVerified) {
+            return res.status(403).json({ error: 'Account not verified yet. Please wait for admin approval.' });
+        }
+
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ error: 'Invalid credentials' });
@@ -40,7 +96,6 @@ router.post('/login', async (req: any, res: any) => {
 
         const token = jwt.sign({ id: user._id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
 
-        // Change: Send the role back to the client
         res.json({ message: 'Login successful', token, role: user.role });
     } catch (error) {
         res.status(500).json({ error: 'Error logging in' });

@@ -10,7 +10,14 @@ export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const role = localStorage.getItem('role');
-    const dashboardPath = role === 'admin' ? '/admin' : '/dashboard';
+
+    // Logic to determine the correct dashboard path based on role
+    let dashboardPath = '/dashboard';
+    if (role === 'admin') {
+        dashboardPath = '/admin';
+    } else if (role === 'guide') {
+        dashboardPath = '/guide-dashboard';
+    }
 
     const handleLogout = () => {
         logout();

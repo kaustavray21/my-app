@@ -7,9 +7,15 @@ export default function PublicOnlyRoute({ children }: { children: ReactNode }) {
 
     if (isAuthenticated) {
         const role = localStorage.getItem('role')
+
         if (role === 'admin') {
             return <Navigate to="/admin" replace />
         }
+
+        if (role === 'guide') {
+            return <Navigate to="/guide-dashboard" replace />
+        }
+
         return <Navigate to="/dashboard" replace />
     }
 

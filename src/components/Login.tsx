@@ -28,6 +28,15 @@ export default function Login() {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('role', data.role);
                 login();
+
+                // Redirect based on Role
+                if (data.role === 'admin') {
+                    navigate('/admin');
+                } else if (data.role === 'guide') {
+                    navigate('/guide-dashboard');
+                } else {
+                    navigate('/dashboard');
+                }
             } else {
                 setError(data.error || 'Login failed');
             }
@@ -61,7 +70,7 @@ export default function Login() {
                     <div>
                         <input
                             type="email"
-                            placeholder="Username"
+                            placeholder="Email / Username"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="
@@ -129,6 +138,18 @@ export default function Login() {
                         "
                     >
                         Sign up
+                    </Link>
+                </p>
+                <p className="m-0 mt-2 text-center text-[10px] text-[#747474] font-sans">
+                    Want to be a guide?
+                    <Link
+                        to="/register-guide"
+                        className="
+                            ml-1 text-[11px] text-[#0d9488] font-[800] underline
+                            decoration-[#0d9488] hover:text-[#0f766e]
+                        "
+                    >
+                        Register here
                     </Link>
                 </p>
             </div>
