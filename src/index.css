@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
-root {
+@import "swiper/css";
+@import "swiper/css/effect-coverflow";
+@import "swiper/css/pagination";
+
+:root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
@@ -10,13 +14,24 @@ html, body {
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow-x: hidden; /* This prevents the horizontal scrollbar */
-    background-color: #f9fafb; /* Matches your light gray theme */
+    overflow-x: hidden;
+    background-color: #f9fafb;
 }
 
-/* Ensure the root div also takes full width */
 #root {
     width: 100%;
     min-height: 100vh;
     isolation: isolate;
+}
+
+.swiper-pagination-bullet {
+    background: #cbd5e1;
+    opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+    background: #0d9488 !important;
+    width: 24px;
+    border-radius: 4px;
+    transition: width 0.3s ease;
 }
