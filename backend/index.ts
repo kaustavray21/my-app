@@ -4,7 +4,8 @@ import cors from 'cors';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
 import adminRoutes from './routes/admin';
-import destinationRoutes from './routes/destinations'; // <--- Import this
+import destinationRoutes from './routes/destinations';
+import locationRoutes from './routes/locations'; // <--- Import this
 
 const app = express();
 const PORT = 3000;
@@ -19,7 +20,8 @@ mongoose.connect('mongodb://localhost:27017/my-app')
 app.use('/', authRoutes);
 app.use('/', userRoutes);
 app.use('/', adminRoutes);
-app.use('/', destinationRoutes); // <--- Use the route
+app.use('/', destinationRoutes);
+app.use('/', locationRoutes); // <--- Use the route
 
 app.get('/', (req, res) => {
     res.send('Server is running');

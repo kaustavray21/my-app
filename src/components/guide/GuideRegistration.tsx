@@ -1,5 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
+interface LocationData {
+    _id: string;
+    district: string;
+    cities: string[];
+}
 
 export default function GuideRegistration() {
     const [formData, setFormData] = useState({
@@ -14,26 +20,54 @@ export default function GuideRegistration() {
         city: ''
     });
 
+    // State for dynamic locations
+    const [locations, setLocations] = useState<LocationData[]>([]);
+    const [availableCities, setAvailableCities] = useState<string[]>([]);
+
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoadingLocations, setIsLoadingLocations] = useState(true);
 
-    // Dummy data for dropdowns
-    const districts = ['Ranchi', 'East Singhbhum', 'Hazaribagh', 'Dhanbad', 'Bokaro'];
-    const cities = {
-        'Ranchi': ['Ranchi', 'Kanke', 'Hatia'],
-        'East Singhbhum': ['Jamshedpur', 'Ghatshila'],
-        'Hazaribagh': ['Hazaribagh', 'Barhi'],
-        'Dhanbad': ['Dhanbad', 'Jharia'],
-        'Bokaro': ['Bokaro Steel City', 'Chas']
-    };
+    // Fetch Locations on Mount
+    useEffect(() => {
+        const fetchLocations = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/locations');
+                if (response.ok) {
+                    const data = await response.json();
+                    setLocations(data);
+                } else {
+                    console.error('Failed to fetch locations');
+                }
+            } catch (error) {
+                console.error('Error fetching locations:', error);
+            } finally {
+                setIsLoadingLocations(false);
+            }
+        };
+
+        fetchLocations();
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+
+        // Handle District Change specifically to update cities
+        if (name === 'district') {
+            const selectedLocation = locations.find(loc => loc.district === value);
+            setAvailableCities(selectedLocation ? selectedLocation.cities : []);
+            setFormData(prev => ({
+                ...prev,
+                district: value,
+                city: '' // Reset city when district changes
+            }));
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -55,10 +89,10 @@ export default function GuideRegistration() {
 
             if (response.ok) {
                 setMessage("Registration successful! You will be verified within 24 hrs.");
-                // Optional: Clear form
                 setFormData({
                     name: '', email: '', mobile: '', dob: '', aadhaar: '', pan: '', address: '', district: '', city: ''
                 });
+                setAvailableCities([]);
             } else {
                 setError(data.error || 'Registration failed');
             }
@@ -195,11 +229,16 @@ export default function GuideRegistration() {
                                         required
                                         value={formData.district}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all bg-white"
+                                        disabled={isLoadingLocations}
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all bg-white disabled:bg-gray-100"
                                     >
-                                        <option value="">Select District</option>
-                                        {districts.map(dist => (
-                                            <option key={dist} value={dist}>{dist}</option>
+                                        <option value="">
+                                            {isLoadingLocations ? 'Loading Districts...' : 'Select District'}
+                                        </option>
+                                        {locations.map((loc) => (
+                                            <option key={loc._id} value={loc.district}>
+                                                {loc.district}
+                                            </option>
                                         ))}
                                     </select>
                                 </div>
@@ -212,12 +251,14 @@ export default function GuideRegistration() {
                                         required
                                         value={formData.city}
                                         onChange={handleChange}
-                                        disabled={!formData.district}
+                                        disabled={!formData.district || availableCities.length === 0}
                                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all bg-white disabled:bg-gray-100"
                                     >
                                         <option value="">Select City</option>
-                                        {formData.district && (cities as any)[formData.district]?.map((city: string) => (
-                                            <option key={city} value={city}>{city}</option>
+                                        {availableCities.map((city) => (
+                                            <option key={city} value={city}>
+                                                {city}
+                                            </option>
                                         ))}
                                     </select>
                                 </div>
